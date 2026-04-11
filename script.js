@@ -572,6 +572,7 @@ const quiz = [
   function hideLoader() {
     loader.classList.add("hidden");
     document.getElementById("card").style.display = "block";
+    document.getElementById("music-ui").style.display = "block";
     loadQuestion();
   }
 
@@ -580,6 +581,7 @@ const quiz = [
 
     // reset UI base
     document.getElementById("card").style.display = "none";
+    document.getElementById("music-ui").style.display = "none";
     document.getElementById("polaroid").style.display = "none";
     document.getElementById("gallery").style.display = "none";
     document.getElementById("scatter-container").style.display = "none";

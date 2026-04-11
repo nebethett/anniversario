@@ -10,8 +10,8 @@
   <audio id="bgMusic" loop>
     <source src="audio/music.mp3" type="audio/mpeg">
   </audio>
-
-  <div class="music-ui">
+<div id="loader" class="loader hidden"></div>
+  <div class="music-ui" id="music-ui">
     <p class="music-title" id="musicTitle">🎵 Clicca Play per avviare la musica</p>
     <div class="music-controls">
       <button id="btnPlay" onclick="playMusic()">▶ Play</button>
@@ -19,7 +19,6 @@
       <button id="btnStop" onclick="stopMusic()">⏹ Stop</button>
     </div>
   </div>
-<div id="loader" class="loader hidden"></div>
 <div class="card" id="card">
   <h2 id="question"></h2>
   <div id="answers"></div>
