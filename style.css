@@ -368,7 +368,7 @@ body {
 
     transform: translate(-50%, -50%);
 
-    background-image: url("/images/other/heart.png"); /* 👈 tua immagine */
+    background-image: url("images/other/heart.png"); /* 👈 tua immagine */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -527,7 +527,7 @@ body {
     border-radius: 14px;
 
     overflow: hidden;
-    background-image: url("/images/other/heart.png"); /* 👈 tua immagine */
+    background-image: url("images/other/heart.png"); /* 👈 tua immagine */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
