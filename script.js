@@ -58,8 +58,8 @@ const quiz = [
     correct: 1,
     imgWrong: 'images/quiz7/wrong.jpg',
     imgCorrect: 'images/quiz7/correct.jpg',
-    textCorrect: 'Proprio lei.. \n E C LABBRAT',
-    textWrong: 'T piacess'
+    textCorrect: 'Proprio lei.. E C LABBRAT',
+    textWrong: 'T piacessss'
   },
   {
     question: "Dove eravate quando vi hanno detto di sposarvi?",
