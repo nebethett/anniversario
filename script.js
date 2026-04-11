@@ -149,6 +149,7 @@ const quiz = [
   });
 
   function preloadImages() {
+    initial();
     showLoader();
     const allImages = [];
 
@@ -507,8 +508,6 @@ const quiz = [
     }
   }
 
-  document.body.classList.add("loading");
-
   preloadImages();
 
   function showLoader() {
@@ -517,5 +516,23 @@ const quiz = [
 
   function hideLoader() {
     loader.classList.add("hidden");
+    document.getElementById("card").style.display = "block";
+    loadQuestion();
   }
-  loadQuestion();
+
+  function initial(){
+    hideNavButtons();
+
+    // reset UI base
+    document.getElementById("card").style.display = "none";
+    document.getElementById("polaroid").style.display = "none";
+    document.getElementById("gallery").style.display = "none";
+    document.getElementById("scatter-container").style.display = "none";
+    document.getElementById("collage-container").style.display = "none";
+    document.getElementById("quiz2").style.display = "none";
+    document.getElementById("quiz4").style.display = "none";
+    wrap.style.display = "none";
+
+    const img = document.getElementById("reaction");
+    img.style.display = "none";
+  }
