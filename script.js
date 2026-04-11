@@ -148,6 +148,48 @@ const quiz = [
     startDist = 0;
   });
 
+  const music = document.getElementById("bgMusic");
+    const title = document.getElementById("musicTitle");
+
+    const btnPlay = document.getElementById("btnPlay");
+    const btnPause = document.getElementById("btnPause");
+    const btnStop = document.getElementById("btnStop");
+
+    function resetButtons() {
+      btnPlay.classList.remove("active");
+      btnPause.classList.remove("active");
+      btnStop.classList.remove("active");
+    }
+
+    function playMusic() {
+      music.volume = 0.3;
+      music.play().catch(console.log);
+
+      resetButtons();
+      btnPlay.classList.add("active");
+
+      title.textContent = "🎵 Musica in riproduzione";
+    }
+
+    function pauseMusic() {
+      music.pause();
+
+      resetButtons();
+      btnPause.classList.add("active");
+
+      title.textContent = "⏸ Musica in pausa";
+    }
+
+    function stopMusic() {
+      music.pause();
+      music.currentTime = 0;
+
+      resetButtons();
+      btnStop.classList.add("active");
+
+      title.textContent = "⏹ Musica ferma";
+    }
+
   function preloadImages() {
     initial();
     showLoader();
