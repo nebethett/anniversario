@@ -178,6 +178,13 @@ const quiz = [
     document.getElementById("collage-container").style.display = "none";
     document.getElementById("quiz2").style.display = "none";
     document.getElementById("quiz4").style.display = "none";
+    if(isCorrect && current === 0){
+       document.getElementById("group").classList.remove("btnGroup");
+       document.getElementById("group").classList.add("btnGroup-firstQuestion");
+    } else if(isCorrect && current > 0){
+      document.getElementById("group").classList.add("btnGroup");
+      document.getElementById("group").classList.remove("btnGroup-firstQuestion");
+    }
     wrap.style.display = "none";
 
     const img = document.getElementById("reaction");

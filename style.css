@@ -116,6 +116,12 @@ body {
     width: 100%;
     margin-top: 2% !important;
   }
+
+  .btnGroup-firstQuestion {
+    display: flex;
+    justify-content: flex-end; /* tutto a destra */
+    gap: 10px;
+  }
   
   button:hover {
     background: #e6005c;
