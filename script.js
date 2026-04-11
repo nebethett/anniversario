@@ -81,6 +81,8 @@ const quiz = [
   }
 ];
 
+  const loader = document.getElementById("loader");
+
   const STATE = {
     QUESTION: "question",
     RESULT: "result",
@@ -145,6 +147,25 @@ const quiz = [
   lightboxImg.addEventListener("touchend", () => {
     startDist = 0;
   });
+
+  function preloadImages() {
+    showLoader();
+    const allImages = [];
+
+    quiz.forEach(q => {
+      if (q.imgWrong) allImages.push(q.imgWrong);
+      if (q.imgCorrect) allImages.push(q.imgCorrect);
+      if (q.images) allImages.push(...q.images);
+      if (q.scatteredImgs) allImages.push(...q.scatteredImgs);
+      if (q.collageImages) allImages.push(...q.collageImages);
+    });
+
+    allImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+    hideLoader();
+  }
 
   function renderState(q, isCorrect) {
     hideNavButtons();
@@ -486,4 +507,15 @@ const quiz = [
     }
   }
 
+  document.body.classList.add("loading");
+
+  preloadImages();
+
+  function showLoader() {
+    loader.classList.remove("hidden");
+  }
+
+  function hideLoader() {
+    loader.classList.add("hidden");
+  }
   loadQuestion();
