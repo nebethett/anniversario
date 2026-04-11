@@ -193,27 +193,42 @@ const quiz = [
   function preloadImages() {
     initial();
     showLoader();
-    const allImages = [];
 
-    quiz.forEach(q => {
-      if (q.imgWrong) allImages.push(q.imgWrong);
-      if (q.imgCorrect) allImages.push(q.imgCorrect);
-      if (q.images) allImages.push(...q.images);
-      if (q.scatteredImgs) allImages.push(...q.scatteredImgs);
-      if (q.collageImages) allImages.push(...q.collageImages);
+    // 👇 forza render del loader (IMPORTANTE su mobile)
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+
+        const allImages = [];
+
+        quiz.forEach(q => {
+          if (q.imgWrong) allImages.push(q.imgWrong);
+          if (q.imgCorrect) allImages.push(q.imgCorrect);
+          if (q.images) allImages.push(...q.images);
+          if (q.scatteredImgs) allImages.push(...q.scatteredImgs);
+          if (q.collageImages) allImages.push(...q.collageImages);
+        });
+
+        // 📸 preload immagini
+        const imagePromises = allImages.map(src => {
+          return new Promise(res => {
+            const img = new Image();
+            img.onload = img.onerror = res;
+            img.src = src;
+          });
+        });
+
+        // 🎵 preload audio (mobile-safe)
+        const music = new Audio("audio/music.mp3");
+        music.preload = "auto";
+        music.load();
+
+        await Promise.all(imagePromises);
+
+        hideLoader();
+        resolve();
+
+      }, 50); // 👈 piccolo delay fondamentale per mobile
     });
-
-    allImages.forEach(src => {
-      const img = new Image();
-      img.src = src;
-    });
-
-    // 🎵 PRELOAD AUDIO
-    const music = new Audio("audio/music.mp3");
-    music.preload = "auto";
-    music.load();
-
-    hideLoader();
   }
 
   function renderState(q, isCorrect) {
