@@ -80,6 +80,17 @@ const quiz = [
     textWrong: 'Uno dei traguardi \n ma non prendiamoci in giro..'
   }
 ];
+
+  const STATE = {
+    QUESTION: "question",
+    RESULT: "result",
+    GALLERY: "gallery",
+    SCATTER: "scatter",
+    COLLAGE: "collage",
+    END: "end"
+  };
+
+  let state = STATE.QUESTION;
   
   let current = 0;
   let btnBack = document.getElementById("goBack");
@@ -134,27 +145,82 @@ const quiz = [
   lightboxImg.addEventListener("touchend", () => {
     startDist = 0;
   });
-  
-  function loadQuestion() {
-    const scatter = document.getElementById("scatter-container");
-    scatter.style.display = "none";
-    const collage = document.getElementById("collage-container");
-    collage.style.display = "none";
-    const gallery = document.getElementById("gallery");
-    gallery.style.display = "none";
-    const quiz2 = document.getElementById("quiz2");
-    quiz2.style.display = "none";
-    const quiz4 = document.getElementById("quiz4");
-    quiz4.style.display = "none";
+
+  function renderState(q, isCorrect) {
+    hideNavButtons();
+
+    // reset UI base
     document.getElementById("polaroid").style.display = "none";
-    btnAhead.style.display = "none";
-    btnBack.classList.add("hidden");
+    document.getElementById("gallery").style.display = "none";
+    document.getElementById("scatter-container").style.display = "none";
+    document.getElementById("collage-container").style.display = "none";
+    document.getElementById("quiz2").style.display = "none";
+    document.getElementById("quiz4").style.display = "none";
     wrap.style.display = "none";
+
+    const img = document.getElementById("reaction");
+    img.style.display = "none";
+
+    // 👉 DECISIONE BOTTONI (QUI MAGIA)
+    switch (state) {
+
+      case STATE.QUESTION:
+        btnAhead.classList.add("hidden");
+        btnBack.classList.add("hidden");
+        break;
+
+      case STATE.RESULT:
+        document.getElementById("polaroid").style.display = "inline-block";
+        const img = document.getElementById("reaction");
+        img.style.display = "block";
+        if(isCorrect){
+          btnAhead.classList.remove("hidden");
+          btnBack.classList.toggle("hidden", current === 0);
+        } else {
+          hideNavButtons();
+        }
+        break;
+
+      case STATE.GALLERY:
+        renderGallery(q.images);
+        btnAhead.classList.remove("hidden");
+        btnBack.classList.toggle("hidden", current === 0);
+        break;
+      case STATE.SCATTER:
+        renderScattered(q.scatteredImgs);
+        btnAhead.classList.remove("hidden");
+        btnBack.classList.toggle("hidden", current === 0);
+        break;
+      case STATE.COLLAGE:
+        renderCollage(q.collageImages);
+        btnAhead.classList.remove("hidden");
+        btnBack.classList.toggle("hidden", current === 0);
+        break;
+
+      case STATE.END:
+        hideNavButtons();
+        break;
+    }
+  }
+
+  async function loadQuestion() {
+    state = STATE.QUESTION;
+    renderState(null, null);
+
+    // ⏳ PICCOLO DELAY PER RESET UI (effetto transizione)
+    document.querySelector(".card").style.opacity = 0;
+
+    await new Promise(r => setTimeout(r, 250));
+
+    document.querySelector(".card").style.opacity = 1;
+
     if (current >= quiz.length) {
+      state = STATE.END;
+      renderState(null, null);
+
       document.querySelector(".card").innerHTML = `
         <h2>Hai vinto ❤️</h2>
-        <p>Dai erano semplici le domande...</p>
-        <p>o meglio ho messo solo quelle di cui conoscevo la risposta.</p>
+        <p>Dai erano semplici le domande...o meglio ho messo solo quelle di cui conoscevo la risposta.</p>
         <p>Sei tutta la mia vita.</p>
         <p>Hai visto? Ho fatto qualcosa da programmatrice che non sia per lavoro.</p>
         <p>Spero che ti sia piaciuto questo mini giochino e che tu sia fiero di me.</p>
@@ -164,86 +230,87 @@ const quiz = [
       `;
       return;
     }
-  
+
     const q = quiz[current];
+
     document.getElementById("question").innerHTML = q.question;
-  
+
     const answersDiv = document.getElementById("answers");
     answersDiv.innerHTML = "";
-  
+
     q.answers.forEach((ans, i) => {
       const btn = document.createElement("button");
+      btn.classList.add("quiz-btn");
       btn.innerText = ans;
       btn.onclick = () => checkAnswer(i);
       answersDiv.appendChild(btn);
     });
-  
-    document.getElementById("feedback").innerText = "";
   }
   
   function checkAnswer(i) {
-    const feedback = document.getElementById("feedback");
-    const img = document.getElementById("reaction");
-    img.style.display = "none";
-    feedback.style.display = "none";
-    btnBack.classList.add("hidden");
-    btnAhead.style.display = "none";
-    const polaroid = document.getElementById("polaroid");
-    polaroid.style.display = "none";
-    const quiz2 = document.getElementById("quiz2");
-    quiz2.style.display = "none";
-    const quiz4 = document.getElementById("quiz4");
-    quiz4.style.display = "none";
+    const q = quiz[current];
+    let isCorrect = false;
 
-    if (i === quiz[current].correct) {
-      if(quiz[current].images){
-        renderGallery(quiz[current].images);
-      } else if(quiz[current].scatteredImgs){
-        renderScattered(quiz[current].scatteredImgs);
-      } else if(quiz[current].collageImages){
-        renderCollage(quiz[current].collageImages);
-      } else {
-        setResult(true, quiz[current].textCorrect);
-        polaroid.style.display = "inline-block";
-        
-        img.src = quiz[current].imgCorrect;
-        img.style.display = "block";
+    state = STATE.RESULT;
+
+    const polaroid = document.getElementById("polaroid");
+    const img = document.getElementById("reaction");
+
+    const buttons = document.querySelectorAll(".quiz-btn");
+
+    if (i === q.correct) {
+      isCorrect = true;
+      buttons.forEach((btn, index) => {
+        btn.classList.remove("wrong","correct");
+        if (index === quiz[current].correct) {
+          btn.classList.add("correct");
+        }
+        btn.disabled = true;
+      });
+
+      setResult(true, q.textCorrect);
+
+      if (q.images) {
+        state = STATE.GALLERY;
+      }
+
+      else if (q.scatteredImgs) {
+        state = STATE.SCATTER;
+      }
+
+      else if (q.collageImages) {
+        state = STATE.COLLAGE;
+      }
+
+      else {
+        img.src = q.imgCorrect;
         triggerPop();
       }
-      if(current >= 0){
-        btnAhead.style.display = "block";
-      }
-
-      if(current > 0){
-        btnBack.classList.remove("hidden"); // mostra
-      } else {
-        btnBack.classList.add("hidden");   // nasconde ma mantiene spazio
-      }
-
 
     } else {
-      setResult(false,  quiz[current].textWrong);
-      polaroid.style.display = "inline-block";
-
-      img.src = quiz[current].imgWrong;
-      img.style.display = "block";
+      buttons.forEach((btn, index) => {
+        btn.classList.remove("wrong","correct");
+        if (index !== quiz[current].correct && index === i) {
+          btn.classList.add("wrong");
+        }
+      });
+      setResult(false, q.textWrong);
+      img.src = q.imgWrong;
       triggerPop();
     }
+
+    renderState(q, isCorrect);
   }
   
   function goBack(){
-    const img = document.getElementById("reaction");
-    img.style.display = "none";
-    img.classList.remove("pop");
     current--;
+    state = STATE.QUESTION;
     loadQuestion();
   }
 
   function goAhead(){
-    const img = document.getElementById("reaction");
-    img.style.display = "none";
-    img.classList.remove("pop");
     current++;
+    state = STATE.QUESTION;
     loadQuestion();
   }
 
@@ -259,6 +326,7 @@ const quiz = [
       polaroid.classList.add("correct");
     } else {
       polaroid.classList.add("wrong");
+      hideNavButtons();
     }
 
     feedback.innerText = text;
@@ -394,6 +462,28 @@ const quiz = [
 
       container.appendChild(img);
     });
+  }
+
+  function hideNavButtons() {
+    btnBack.classList.add("hidden");
+    btnAhead.classList.add("hidden");
+  }
+
+  function showNavButtons() {
+    btnAhead.classList.remove("hidden");
+    btnBack.classList.remove("hidden");
+  }
+
+  function updateNavButtons() {
+    // sempre mostra "avanti" dopo risposta
+    btnAhead.classList.remove("hidden");
+
+    // mostra "indietro solo se non sei alla prima domanda"
+    if (current > 0) {
+      btnBack.classList.remove("hidden");
+    } else {
+      btnBack.classList.add("hidden");
+    }
   }
 
   loadQuestion();

@@ -4,6 +4,15 @@ body {
     background: #ffe6f0;
     padding: 40px;
   }
+
+  #reaction {
+    opacity: 1;
+    transition: opacity 0.25s ease;
+  }
+
+  #reaction.hidden {
+    opacity: 0;
+  }
   
   .card {
     background: white;
@@ -12,6 +21,7 @@ body {
     max-width: 600px;
     margin: auto;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: opacity 0.25s ease;
   }
   
   button {
@@ -24,9 +34,48 @@ body {
     cursor: pointer;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     letter-spacing: 1px;
-    transition: 0.2s;
   }
 
+  .quiz-btn {
+    background: transparent !important;
+    border: 2px solid #ff4d88 !important;
+    color: #ff4d88 !important;
+
+    padding: 10px 18px;
+    margin: 8px;
+    border-radius: 999px;
+
+    font-size: 14px;
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+  }
+
+  /* ✅ CORRETTA */
+  .quiz-btn.correct {
+    background: #b9fbc0 !important;        /* verde chiaro */
+    border-color: #2b9348 !important;      /* verde scuro */
+    color: #1b4332 !important;
+
+    box-shadow:
+      0 0 10px rgba(43, 147, 72, 0.4),
+      0 0 20px rgba(43, 147, 72, 0.2);
+  }
+
+  /* ❌ SBAGLIATA */
+  .quiz-btn.wrong {
+    background: #ffccd5 !important;        /* rosso chiaro */
+    border-color: #c9184a !important;      /* rosso scuro */
+    color: #6a040f !important;
+
+    opacity: 0.85;
+  }
+
+  /* hover leggero */
+  .quiz-btn:not(.correct):not(.wrong):not(:disabled):hover {
+    background: rgba(255, 77, 136, 0.1) !important;
+    transform: scale(1.05);
+  }
   .btnGroup {
     display: flex;
     justify-content: space-evenly;
@@ -461,6 +510,7 @@ body {
     width: 60%;
     height: 600px;
     margin: auto;
+    transition: 0.25s ease;
 
     border-radius: 14px;
 
