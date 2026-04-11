@@ -165,6 +165,12 @@ const quiz = [
       const img = new Image();
       img.src = src;
     });
+
+    // 🎵 PRELOAD AUDIO
+    const music = new Audio("audio/music.mp3");
+    music.preload = "auto";
+    music.load();
+
     hideLoader();
   }
 
