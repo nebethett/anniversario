@@ -2,7 +2,8 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Il Nostro Gioco ❤️</title>
+  <title>Buon anniversario</title>
+  <link rel="icon" href="/images/site-icon.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -10,9 +11,42 @@
 <div class="card">
   <h2 id="question"></h2>
   <div id="answers"></div>
-  <p id="feedback"></p>
+  
+</div>
+<div class="btnGroup">
+<button class="btnGoBack" id="goBack" onclick="goBack()">TORNA INDIETRO</button>
+<button class="btnGoAhead" id="goAhead" onclick="goAhead()">VAI AVANTI</button>
+</div>
+<div class="flexDiv">
+  
+  <div class="polaroid" id="polaroid">
+    <img id="reaction" src="" style="display:none;">
+    <p id="feedback"></p>
+  </div>
+
+</div>
+<div class="content" id="quiz2">
+  <h2 class="neon-romantic">le foto parlano da sè</h2>
 </div>
 
+<div class="gallery-wrapper" id="wrap">
+
+  <button class="arrow left cropl" onclick="scrollGallery(-1)"><img src="/images/arrow/arrow.png"></button>
+
+  <div class="gallery" id="gallery"></div>
+
+  <button class="arrow right cropr" onclick="scrollGallery(1)"><img src="/images/arrow/arrow.png"></button>
+
+</div>
+
+<div id="lightbox" class="lightbox">
+  <img id="lightboxImg" src="" alt="">
+</div>
+<div id="scatter-container"></div>
+<div class="content2" id="quiz4">
+  <h2 class="neon-romantic">Corretto. Quando arrivano altri fiori??</h2>
+</div>
+<div id="collage-container"></div>
 <script src="script.js"></script>
 </body>
 </html>

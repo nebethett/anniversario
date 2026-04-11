@@ -9,7 +9,7 @@ body {
     background: white;
     padding: 20px;
     border-radius: 15px;
-    max-width: 400px;
+    max-width: 600px;
     margin: auto;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
   }
@@ -22,8 +22,468 @@ body {
     background: #ff4d88;
     color: white;
     cursor: pointer;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    letter-spacing: 1px;
+    transition: 0.2s;
+  }
+
+  .btnGroup {
+    display: flex;
+    justify-content: space-evenly;
+    margin: auto;
+    margin-top: 2% !important;
   }
   
   button:hover {
     background: #e6005c;
+  }
+
+  .polaroid.pop {
+    animation: popIn 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes popIn {
+    0% {
+      transform: scale(0.6) rotate(0deg);
+      opacity: 0;
+    }
+
+    60% {
+      transform: scale(1.05) rotate(-4deg);
+      opacity: 1;
+    }
+
+    100% {
+      transform: scale(1) rotate(-3deg);
+      opacity: 1;
+    }
+  }
+
+  .hidden {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .flexDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    margin-top: 3% !important;
+  }
+
+  /* base polaroid */
+  .polaroid {
+    background: #ffffff;
+    padding: 12px 12px 45px 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    display: inline-block;
+    transform: rotate(-3deg);
+
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              background 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, box-shadow;
+  }
+
+  /* immagine */
+  .polaroid img {
+    display: block;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  /* testo */
+  #feedback {
+    margin: 12px 0 0 0;
+    text-align: center;
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .polaroid.correct {
+    box-shadow: 0 12px 30px rgba(46, 204, 113, 0.25);
+  }
+
+  .polaroid.wrong {
+    box-shadow: 0 12px 30px rgba(231, 76, 60, 0.25);
+  }
+
+  .gallery {
+    display: flex;
+    gap: 14px;
+
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+
+    /* 📦 CARD STYLE */
+    margin: 20px auto;
+    max-width: 88%;
+    padding: 22px;
+
+    background: #fff6c7; /* 🍌 banana chiaro */
+    border-radius: 14px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+
+    /* nasconde scrollbar */
+    scrollbar-width: none;
+  }
+
+  .gallery::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* immagini */
+  .gallery img {
+    height: 260px;
+    border-radius: 12px;
+
+    flex: 0 0 auto;
+    object-fit: cover;
+
+    scroll-snap-align: center;
+
+    transition: transform 0.3s ease;
+  }
+
+  /* hover leggero */
+  .gallery img:hover {
+    transform: scale(1.05);
+  }
+
+  .gallery-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 40px auto;
+    max-width: 65%;
+  }
+
+  /* FRECCE */
+  .arrow {
+    position: absolute;
+    border: none;
+    background-color: transparent !important;
+
+    width: 35px;
+    height: 35px;
+
+    font-size: 40px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .arrow:hover {
+    transform: scale(1.1);
+  }
+
+  .arrow.left {
+    left: -10px;
+  }
+
+  .arrow.right {
+    right: -10px;
+  }  
+
+  .arrow:disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .cropl {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  .cropr {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+
+  .cropl img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    object-position: left; /* oppure bottom / left / right */
+  }
+
+  .cropr img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    object-position: right; /* oppure bottom / left / right */
+  }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+  }
+
+  .lightbox.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+
+    border-radius: 12px;
+
+    transform: scale(1);
+    transition: transform 0.2s ease;
+
+    cursor: zoom-in;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --color-primary: #ff4d88;
+    --color-secondary: #f49b90;
+    --color-tertiary: #f28b7d;
+    --color-quaternary: #f07a6a;
+    --color-quinary: #ee6352;
+  }
+
+  .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    margin: auto;
+  }
+
+  .content2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    margin: auto;
+  }
+
+  .content::before {
+    content: "";
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 140px;
+    height: 140px;
+
+    transform: translate(-50%, -50%);
+
+    background-image: url("/images/other/heart.png"); /* 👈 tua immagine */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    opacity: 0.15;
+
+    z-index: 0;
+
+    animation: heartPulse 2.5s ease-in-out infinite;
+  }
+
+  .neon-romantic {
+    color: var(--color-primary);
+
+    position: relative;
+    z-index: 1;
+
+    text-shadow:
+      0 0 4px rgba(255, 200, 220, 0.35),
+      0 0 10px rgba(255, 150, 200, 0.25),
+      0 0 18px rgba(255, 120, 180, 0.15);
+
+    font-weight: 600;
+    letter-spacing: 0.5px;
+
+    animation: neonPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes heartPulse {
+    0% {
+      transform: translate(-50%, -50%) scale(0.5);
+      opacity: 0.10;
+    }
+
+    50% {
+      transform: translate(-50%, -50%) scale(0.9);
+      opacity: 0.20;
+    }
+
+    100% {
+      transform: translate(-50%, -50%) scale(0.5);
+      opacity: 0.10;
+    }
+  }
+
+  @keyframes neonPulse {
+    0% {
+      text-shadow:
+        0 0 3px rgba(255, 200, 220, 0.25),
+        0 0 8px rgba(255, 150, 200, 0.15),
+        0 0 14px rgba(255, 120, 180, 0.10);
+      transform: scale(0.8);
+    }
+
+    50% {
+      text-shadow:
+        0 0 6px rgba(255, 200, 220, 0.45),
+        0 0 14px rgba(255, 150, 200, 0.30),
+        0 0 26px rgba(255, 120, 180, 0.20);
+      transform: scale(1.02);
+    }
+
+    100% {
+      text-shadow:
+        0 0 3px rgba(255, 200, 220, 0.25),
+        0 0 8px rgba(255, 150, 200, 0.15),
+        0 0 14px rgba(255, 120, 180, 0.10);
+      transform: scale(0.8);
+    }
+  }
+
+  #scatter-container {
+    
+    position: relative;
+    width: 50%;
+    height: 600px;
+
+    margin: auto;
+    overflow: hidden;
+
+    background: transparent; /* leggero tono caldo opzionale */
+    border-radius: 14px;
+
+  }
+
+  .scattered-img {
+    position: absolute;
+
+    width: 120px;
+    height: 120px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+    opacity: 0.92;
+
+    pointer-events: none;
+
+    transition: transform 0.4s ease;
+
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0px) rotate(var(--r)); }
+    50% { transform: translateY(-10px) rotate(var(--r)); }
+    100% { transform: translateY(0px) rotate(var(--r)); }
+  }
+
+  .scatter-text {
+    position: absolute;
+
+    font-size: 32px;
+    font-weight: 700;
+
+    color: #ff6b9c;
+
+    text-shadow:
+      0 0 10px rgba(255, 100, 150, 0.3),
+      0 0 20px rgba(255, 100, 150, 0.2);
+
+    transform: rotate(-5deg);
+
+    pointer-events: none;
+
+    animation: popText 1.2s ease-out;
+  }
+
+  @keyframes popText {
+    0% {
+      transform: scale(0.5) rotate(0deg);
+      opacity: 0;
+    }
+
+    60% {
+      transform: scale(1.2) rotate(-5deg);
+      opacity: 1;
+    }
+
+    100% {
+      transform: scale(1) rotate(-5deg);
+      opacity: 1;
+    }
+  }
+
+  #collage-container {
+    position: relative;
+    width: 60%;
+    height: 600px;
+    margin: auto;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+    background-image: url("/images/other/heart.png"); /* 👈 tua immagine */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .collage-img {
+    position: absolute;
+
+    width: 140px;
+    height: 140px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+
+    pointer-events: none;
+
+    transition: transform 0.3s ease;
   }
