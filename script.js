@@ -2,7 +2,7 @@ const quiz = [
   {
     question: "Quando ci siamo dati il primo bacio?",
     answers: ["23 aprile 2023", "22 aprile 2023", "24 aprile 2023"],
-    correct: 1,
+    correct: 0,
     imgWrong: 'images/quiz1/wrong.jpg',
     imgCorrect: 'images/quiz1/correct.jpg',
     textCorrect: 'Bravo vita mii',
